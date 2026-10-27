@@ -31,6 +31,11 @@ canopy graph install spec-loop
 canopy node install implementer
 ```
 
+## Patterns
+
+The [patterns](patterns) are short pages on the orchestration ideas behind these
+documents: where each comes from, what the lab saw, and which document installs it.
+
 ## Make your own graphs repo
 
 1. **Create a public repo.** Fork this one or use it as a template. Delete the
