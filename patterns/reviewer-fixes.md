@@ -56,9 +56,10 @@ repairs without turning into a second implementer that iterates.
 
 This differs from the catalogue's `reviewer-committer`, which fails a
 bad diff back to the implementer with a list of what is wrong instead
-of fixing it. The `single-committer` graph goes further the other way:
-its committer is told not to edit files at all. Pick the one that
-matches how much you trust your reviewer model.
+of fixing it. `canopy-loop` splits the two jobs: its first reviewer
+only reports what is missing, its reviewer of record repairs what it
+finds, and a check node commits those repairs. Pick the arrangement
+that matches how much you trust your reviewer model.
 
 ## Try it
 

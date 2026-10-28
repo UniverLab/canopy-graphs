@@ -2,8 +2,7 @@
 title: Adversarial review
 summary: Review the work with models of different families, one told to break it, and back the verdict with deterministic checks.
 status: standard
-implements:
-  - graph:single-committer
+implements: []
 figure: adversarial-review.figure.json
 sources:
   - title: Building effective agents (Anthropic), evaluator-optimizer workflow
@@ -46,17 +45,17 @@ Since then, the lab's standard is adversarial review by models of different fami
 
 A parallel ensemble holds the reviewers. Its `min_pass` is 2, so both members must pass. Member 1 uses the shared constructive prompt. Member 2 overrides it with the adversarial one. No member names a platform or model, so whoever installs the graph binds a different family to each.
 
-This excerpt is from `graphs/single-committer/graph.json`, with the prompt fields left out:
+The shape, with the prompt fields left out:
 
 ```json
 {
   "name": "reviewers",
   "kind": "parallel",
   "commit_rights": false,
-  "entry_from_node": "full-gates",
+  "entry_from_node": "gate",
   "entry_condition": "pass",
-  "on_pass_to": "committer",
-  "on_fail_to": "implementer",
+  "on_pass_to": "commit",
+  "on_fail_to": "implement",
   "min_pass": 2,
   "timeout_minutes": 30
 }
@@ -64,10 +63,12 @@ This excerpt is from `graphs/single-committer/graph.json`, with the prompt field
 
 The reviewers have no commit rights. A single committer lands the work only after both pass, and a failure routes back to the implementer.
 
+No official document implements this pair. The lab's loop reviews for completeness and then for correctness, and its second reviewer repairs what it finds instead of breaking the change on purpose; an adversary needs the narrower case, work that arrives from outside, and is added to that loop as one more ensemble when it is wanted.
+
 ## Try it
 
 ```sh
-canopy graph install single-committer
+canopy graph install canopy-loop
 ```
 
-Bind a different model family to each reviewer member when you install it.
+Bind a different model family to each reviewer member of the pair you add.

@@ -3,7 +3,7 @@ title: Cross-platform check
 summary: The reviewer runs on a different vendor from the implementer, so one family's blind spots and one quota ceiling cannot stall the graph.
 status: in use
 implements:
-  - graph:spec-loop
+  - graph:canopy-loop
 figure: cross-platform-check.figure.json
 sources:
   - title: Building effective agents (Anthropic), evaluator-optimizer workflow
@@ -36,16 +36,16 @@ The lab has not measured how many defects this catches that a same-family review
 
 ## In Canopy
 
-No catalogue document is dedicated to this pattern, because it is a binding choice, not a new shape. Install the spec loop and bind its two agent nodes to different vendors: the implementer on one, the reviewer on another.
+No catalogue document is dedicated to this pattern, because it is a binding choice, not a new shape. Install `canopy-loop` and bind its role ensembles across vendors: the Implementer on one, the Designer on a second, and both reviewers on a third. Every ensemble in that document arrives without a platform or a model, so the split is yours to make at install time.
 
-Everything else stays as the loop defines it. The gate still sits before the reviewer, failures still route back to the implementer, and the reviewer still lands the commit. Only the vendors differ.
+Everything else stays as the loop defines it. The gate still sits before the reviewer, failures still route back to the implementer, and the documenter's own check still proves the tree is clean. Only the vendors differ.
 
-For a harder review bar on top of the split, the single-committer graph adds a second, adversarial reviewer behind the same gate. Bind each of its agent roles across vendors the same way.
+That loop already reviews twice behind one gate — a completeness gate that must locate every requirement, then a reviewer of record that repairs what it finds — so a vendor split there puts two families on the same diff without adding a node.
 
 ## Try it
 
 ```sh
-canopy graph install spec-loop
+canopy graph install canopy-loop
 ```
 
 Bind the implementer and the reviewer to different vendors at install time, and keep the review prompt to diff plus spec plus "find what is wrong".

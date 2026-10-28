@@ -11,9 +11,8 @@ press **Use this template**, to start your own.
 
 | Graph | What it is for |
 |---|---|
-| [spec-loop](graphs/spec-loop) | One spec through implement → gates → review-and-commit → proof → human verdict. |
-| [single-committer](graphs/single-committer) | The spec loop with two reviewers, one adversarial, before one committer lands it. |
-| [quality-bubble](graphs/quality-bubble) | Covering the change already in the worktree with honest tests, no spec needed. |
+| [canopy-loop](graphs/canopy-loop) | The lab's loop as it runs: locked repo, designer, implementer, full gates, completeness review, commit, review-and-fix, gates again, docs, unlock. |
+| [canopy-loop-plain](graphs/canopy-loop-plain) | The same roles as plain nodes: no ensembles, no lock. The starting point. |
 
 | Node | What it is for |
 |---|---|
@@ -30,7 +29,7 @@ press **Use this template**, to start your own.
 Install an official document by its name:
 
 ```sh
-canopy graph install spec-loop
+canopy graph install canopy-loop
 canopy node install implementer
 ```
 
