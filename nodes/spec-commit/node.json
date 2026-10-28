@@ -1,0 +1,10 @@
+{
+  "format_version": 1,
+  "name": "spec-commit",
+  "kind": "check",
+  "description": "Commits all changes with the spec's own commit message, and passes when there is nothing to commit.",
+  "config": {
+    "command": "if [ -z \"$(git status --porcelain)\" ]; then echo 'tree clean: nothing to commit'; exit 0; fi; if [ -z \"$CANOPY_SPEC_COMMIT_MESSAGE\" ]; then echo 'CANOPY_SPEC_COMMIT_MESSAGE is empty'; exit 1; fi; git add -A && git commit -q -m \"$CANOPY_SPEC_COMMIT_MESSAGE\" && echo \"committed $(git log -1 --oneline)\"",
+    "commit_rights": true
+  }
+}

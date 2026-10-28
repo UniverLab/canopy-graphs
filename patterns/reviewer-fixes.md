@@ -3,7 +3,7 @@ title: Reviewer fixes
 summary: The reviewer who rejects the work fixes it, instead of writing change requests for another model to read.
 status: in use
 implements:
-  - node:reviewer-committer
+  - node:reviewer-fixer
 sources:
   - title: Building effective agents (Anthropic), evaluator-optimizer workflow
     url: https://www.anthropic.com/engineering/building-effective-agents
@@ -27,30 +27,31 @@ The lab has no recorded origin story for this pattern, and no measurement of how
 
 ## In Canopy
 
-The catalogue's `reviewer-committer` node is the reviewer role with commit rights. Read it before you rely on it for this pattern: as shipped, its preset reviews the diff, makes exactly one commit when the spec is satisfied, and otherwise fails with a specific list of what is wrong so the implementer can address it. It does not edit files.
+The catalogue's `reviewer-fixer` node is the reviewer of record with
+a licence to edit. Its preset reviews the diff strictly against the
+spec, repairs what it objects to directly in the working tree,
+rewrites tests that would not fail without the feature, and runs the
+gate script once at the end. It never commits: a later node commits
+its fixes.
 
-To get the fixing behaviour, install the node and change its preset so that the reviewer may edit the diff before committing. The node is the right place to start because it already carries commit rights and the strict review against the spec.
+The gate script path is the one thing the preset does not carry. Fill
+in `<GATE-SCRIPT>` at install time with the project's deterministic
+gates. From the preset in `nodes/reviewer-fixer/node.json`:
 
-The graph gives it commit rights like this, from `graphs/spec-loop/graph.json`:
-
-```json
-{
-  "name": "reviewer",
-  "kind": "agent",
-  "position": 5,
-  "config": {
-    "prompt_preset": "reviewer",
-    "commit_rights": true
-  }
-}
+```
+If you changed anything, run the gate script once at the end:
+<GATE-SCRIPT>. It is exactly what the gate node after you runs. Fix
+until it passes. If you changed nothing, do not run it.
 ```
 
-The `single-committer` graph goes the other way: its committer is told not to edit files and to fail the diff back instead. Pick the one that matches how much you trust your reviewer model.
+This differs from the catalogue's `reviewer-committer`, which fails a
+bad diff back to the implementer with a list of what is wrong instead
+of fixing it. The `single-committer` graph goes further the other way:
+its committer is told not to edit files at all. Pick the one that
+matches how much you trust your reviewer model.
 
 ## Try it
 
 ```sh
-canopy node install reviewer-committer
+canopy node install reviewer-fixer
 ```
-
-Then edit the preset in the installed node to allow the reviewer to fix the diff.

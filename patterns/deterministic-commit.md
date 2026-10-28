@@ -3,8 +3,8 @@ title: Deterministic commit
 summary: A check node commits with the spec's own Conventional Commit subject, and a model never writes the commit.
 status: in use
 implements:
+  - node:spec-commit
   - node:commit-check
-  - node:reviewer-committer
 sources:
   - title: Building effective agents (Anthropic), ground truth from the environment
     url: https://www.anthropic.com/engineering/building-effective-agents
@@ -28,11 +28,25 @@ The lab names every spec as the subject its commit will carry, and keeps its gra
 
 ## In Canopy
 
-Read this section carefully, because the catalogue is only part of the way there.
+Two catalogue documents carry this pattern: one commits, one proves.
 
-What exists today:
+`spec-commit` is the commit step. It is a check node with commit
+rights whose command stages everything and commits with the spec's own
+message verbatim. From `nodes/spec-commit/node.json`:
 
-- `commit-check` is the proof step. It passes only if HEAD moved since the spec started. From `nodes/commit-check/node.json`:
+```json
+"config": {
+  "command": "if [ -z \"$(git status --porcelain)\" ]; then echo 'tree clean: nothing to commit'; exit 0; fi; if [ -z \"$CANOPY_SPEC_COMMIT_MESSAGE\" ]; then echo 'CANOPY_SPEC_COMMIT_MESSAGE is empty'; exit 1; fi; git add -A && git commit -q -m \"$CANOPY_SPEC_COMMIT_MESSAGE\" && echo \"committed $(git log -1 --oneline)\"",
+  "commit_rights": true
+}
+```
+
+When the tree is already clean, the command passes without committing.
+Pushing to the work branch is optional; the node's README says where
+to add the push.
+
+`commit-check` is the proof step. It passes only if HEAD moved since
+the spec started. From `nodes/commit-check/node.json`:
 
 ```json
 "config": {
@@ -40,19 +54,19 @@ What exists today:
 }
 ```
 
-- `reviewer-committer` is the baseline the pattern replaces. A model reviews the diff and then commits, and its preset asks for a concise message with no trailers. The message is still model-written.
-
-What does not exist yet: a catalogue node whose check command performs the commit with the spec's subject. Until then, the pattern is the lab's convention, and the two documents above cover its proof half and the model-committed version it improves on.
-
 The stronger proof form is switched on in the node's README, and requires an earlier node with commit rights:
 
 ```sh
 test -n "{{spec_committed_head}}" && test "$(git rev-parse HEAD)" = "{{spec_committed_head}}"
 ```
 
+The model-committed version this pattern replaces is
+`reviewer-committer`: a model reviews the diff and then commits, with
+a concise message it writes itself.
+
 ## Try it
 
 ```sh
+canopy node install spec-commit
 canopy node install commit-check
-canopy node install reviewer-committer
 ```

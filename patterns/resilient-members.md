@@ -2,7 +2,8 @@
 title: Resilient members
 summary: Cascade and round-robin ensembles give one node a fallback ladder or a rotation across providers, so a quota death is not a failed run.
 status: in use
-implements: []
+implements:
+  - node:resilient-implementer
 sources:
   - title: How we built our multi-agent research system (Anthropic), resilience
     url: https://www.anthropic.com/engineering/multi-agent-research-system
@@ -31,12 +32,36 @@ The lab has no measurements on how many runs this saved, and this page does not 
 
 ## In Canopy
 
-The graph schema allows three ensemble kinds: `parallel`, `cascade` and `round_robin`. A cascade or round-robin ensemble is a graph ensemble with that `kind` and a list of members, each of which can name its own platform and model.
+The catalogue's `resilient-implementer` node is a cascade ensemble of
+two implementers. Both members share the implementer prompt; each is
+an empty object so that nobody's platform or model is baked in. The
+cascade keys from `nodes/resilient-implementer/node.json`:
 
-No document in this catalogue uses a cascade or round-robin ensemble yet, and the node schema does not show how to ship one harness-free as a node. For that reason this page implements no catalogue document, and carries no excerpt: the repository has no real file to copy one from.
+```json
+"config": {
+  "kind": "cascade",
+  "min_pass": 1,
+  "members": [
+    {},
+    {}
+  ]
+}
+```
+
+The shared `prompt_template` is the catalogue's implementer role,
+verbatim. `kind: cascade` makes the members a ladder: the first pass
+wins, and a quota or harness failure on the first member falls through
+to the second. `min_pass: 1` says one passing member is enough. Bind a
+different harness to each member at install time, ideally across
+providers, so one quota death cannot end the run.
+
+The graph schema allows a third ensemble kind, `round_robin`, in which
+members take turns. No catalogue node uses it yet.
 
 For the failure side of the same problem, see the `resilience` node. It diagnoses a failure as quota, glitch or a genuine defect, and routes to the right next step. It is a different tool: it reacts after a node fails, where members prevent the failure from ending the run.
 
 ## Try it
 
-No catalogue document implements this pattern yet. When one exists, its install command will appear here.
+```sh
+canopy node install resilient-implementer
+```
