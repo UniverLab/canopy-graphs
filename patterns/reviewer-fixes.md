@@ -17,7 +17,7 @@ A rejection is a message from one model to another. The implementer must read it
 
 ## The pattern
 
-Let the reviewer repair what it rejects. Instead of a list of change requests, it edits the diff and then commits. The loop back to the implementer is kept for the cases the reviewer cannot repair.
+Let the reviewer repair what it rejects. Instead of a list of change requests, it edits the diff, and a later step commits. The loop back to the implementer is kept for the cases the reviewer cannot repair.
 
 This differs from the plain evaluator-optimizer loop Anthropic describes, in which "one LLM call generates a response while another provides evaluation and feedback in a loop." Here the evaluator can also write.
 
