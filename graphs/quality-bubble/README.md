@@ -47,6 +47,12 @@ writes tests from CI's numbers, the gates run them, a committer lands
 them, and a final check verifies the commit and pushes, so CI
 re-measures without a human in the graph.
 
+The catalogue document above is the middle of this shape: the test
+writer, the gates, and the committer. It carries no verdict node, no
+trigger, and no push check. Those are the lab's wrappers for the
+unattended coverage loop; run the document on its own for the
+write-gate-commit core.
+
 ### The verdict node
 
 The whole point is that this node is bash, not a model. It answers

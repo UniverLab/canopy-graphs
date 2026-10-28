@@ -11,7 +11,7 @@ the catalogue document you can install.
 | [Deterministic gates](deterministic-gates.md) | standard | Shell checks decide pass or fail, never an LLM judge, and a failure carries its reason into the next prompt. |
 | [Cross-platform check](cross-platform-check.md) | in use | The reviewer runs on a different vendor from the implementer, so one family's blind spots and one quota ceiling cannot stall the graph. |
 | [Reviewer fixes](reviewer-fixes.md) | in use | The reviewer who rejects the work fixes it, instead of writing change requests for another model to read. |
-| [Review panel](review-panel.md) | experiment | Each reviewer owns one axis, security, performance, maintainability, or project patterns, and every axis must pass. |
+| [Review panel](review-panel.md) | experiment | An experiment: each reviewer owns one axis, security, performance, maintainability, or project patterns, and every axis must pass. |
 | [Parallel proposers](parallel-proposers.md) | in use | Several cheap models draft the same spec in parallel, then one implementer builds on the best ideas. |
 | [Resilient members](resilient-members.md) | in use | Cascade and round-robin ensembles give one node a fallback ladder or a rotation across providers, so a quota death is not a failed run. |
 | [Deterministic commit](deterministic-commit.md) | in use | A check node commits with the spec's own Conventional Commit subject, and a model never writes the commit. |

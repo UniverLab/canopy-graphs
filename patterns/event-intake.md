@@ -33,7 +33,7 @@ The lab runs intake against a single well-known path: a poll script writes one f
 
 The figure shows the full pipeline: the outside event, the script that writes the inbox file, the watch, the intake node, and then the gated loop of implement, gate, and review.
 
-No catalogue document implements this pattern yet. The trigger and the intake prompt below are the whole back half; the front half is one script in front of them.
+No catalogue document implements this pattern yet. The back half is a trigger watching that file plus the intake prompt below; the front half is one script in front of them.
 
 ## Try it
 

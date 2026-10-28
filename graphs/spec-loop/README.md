@@ -73,6 +73,11 @@ edge: that is how a spec completes. Resilience on fail has none
 either: the spec fails honestly, having already scheduled the graph's
 own wake-up.
 
+The catalogue document above is this loop without the resilience
+branch: it carries no resilience node. To run the lab's full shape,
+hang one off the implementer's fail edge, as the Resilient members
+pattern shows.
+
 Keep the graph (the machine) separate from the queue of specs (the
 work); the same graph points at a different backlog tomorrow.
 
