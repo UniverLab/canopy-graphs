@@ -3,7 +3,7 @@ title: Resilient members
 summary: Cascade and round-robin ensembles give one node a fallback ladder or a rotation across providers, so a quota death is not a failed run.
 status: in use
 implements:
-  - node:resilient-implementer
+  - graph:canopy-loop
 figure: resilient-members.figure.json
 sources:
   - title: How we built our multi-agent research system (Anthropic), resilience
@@ -65,27 +65,42 @@ Cascade and round robin reuse the ensemble idea from the parallel proposers: an 
 
 ## In Canopy
 
-The catalogue's `resilient-implementer` node is a cascade ensemble of two implementers sharing the implementer prompt, each member an empty object so no harness is baked in. From `nodes/resilient-implementer/node.json`:
+`canopy-loop` ships this pattern: each of its five working roles is a round-robin ensemble — Designer, Implementer, Reviewer, Auditor and Documenter — and every member is an empty object, so no harness is baked in. From `graphs/canopy-loop/graph.json`:
 
 ```json
-"config": {
-  "kind": "cascade",
-  "min_pass": 1,
+{
+  "name": "Implementer",
+  "kind": "round_robin",
+  "commit_rights": false,
+  "entry_from_node": "Plan check",
+  "entry_condition": "pass",
+  "extra_entry_sources": [
+    {
+      "from_node": "Full gates",
+      "condition": "fail"
+    }
+  ],
+  "on_pass_to": "Full gates",
+  "on_fail_to": "Plan check",
+  "min_pass": 4,
   "members": [
     {},
+    {},
+    {},
     {}
-  ]
+  ],
+  "timeout_minutes": 120
 }
 ```
 
-The first pass wins; a quota or harness failure falls through to the second. Bind a different harness to each member at install time, ideally across providers. The schema also allows `round_robin`, in which members take turns; `canopy-loop` uses it for every role ensemble.
+The members take turns: spend rotates across providers, and a quota death rotates to the next member instead of failing the spec. Bind a different harness to each member at install time. The schema also allows `cascade`, where the members form a ladder and the first pass exits.
 
-For the failure side of the same problem, see the `resilience` node. It reacts after a node fails, where members prevent the failure from ending the run.
+For the failure side of the same problem, `canopy-loop` carries a `Resilience` node: it reacts after a node fails, where members prevent the failure from ending the run.
 
 ## Try it
 
 ```sh
-canopy node install resilient-implementer
+canopy graph install canopy-loop
 ```
 
 To spend free tiers first: one cascade ensemble, cheapest to dearest, one pass enough to exit, short per-member timeouts, no infra retries. The honest limit is the missing memory above: each new spec rediscovers the spent tiers.

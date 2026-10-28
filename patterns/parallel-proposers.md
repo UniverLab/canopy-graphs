@@ -2,8 +2,7 @@
 title: Parallel proposers
 summary: Several cheap models draft the same spec in parallel, then one implementer builds on the best ideas.
 status: in use
-implements:
-  - node:ensemble-proposers
+implements: []
 figure: parallel-proposers.figure.json
 sources:
   - title: Mixture-of-Agents Enhances Large Language Model Capabilities (Wang et al.)
@@ -48,29 +47,20 @@ An ensemble is one unit, not several hand-wired nodes. A parallel ensemble takes
 
 Create it with a single call that makes the members, the quorum, and the entry and exit edges together. Wiring several parallel `pass` edges out of one node by hand is the ambiguous-outgoing-edges mistake, and it aborts the run.
 
-A parallel ensemble node holds the proposers. All members share one prompt template, and each member is an empty object so that nobody's platform or model is baked in. This is `nodes/ensemble-proposers/node.json`:
+A parallel ensemble node holds the proposers. All members share one prompt template, and each member is an empty object so that nobody's platform or model is baked in. The catalogue ships no proposers node: build the ensemble in the graph you own, give it the draft prompt, set `min_pass` to the member count so every draft must pass, and bind a different model to each member at install time. The figure on this page carries the same shape, with the wiring left out:
 
 ```json
 {
-  "format_version": 1,
-  "name": "ensemble-proposers",
-  "kind": "ensemble",
-  "description": "Three parallel proposers draft concrete solutions for the same spec so a downstream implementer builds from a pre-digested draft.",
-  "config": {
-    "prompt_template": "Draft a complete solution for this spec. Be concrete and specific — an implementer downstream may build directly from your draft without ever seeing this spec itself, so leave nothing implicit:\n\n{{spec_content}}\n\nPrevious feedback (if any): {{previous_feedback}}",
-    "members": [
-      {},
-      {},
-      {}
-    ]
-  }
+  "name": "drafters",
+  "kind": "parallel",
+  "min_pass": 3,
+  "members": [
+    {},
+    {},
+    {}
+  ],
+  "timeout_minutes": 30
 }
 ```
 
-`min_pass` is omitted, so every member must pass. Bind a different model to each member at install time.
-
-## Try it
-
-```sh
-canopy node install ensemble-proposers
-```
+Three drafters run at once and their outputs go straight to one implementer, which is the point: the drafts are pre-digestion, and the paid model only writes.

@@ -1,0 +1,13 @@
+{
+  "format_version": 1,
+  "name": "full-gates-cargo",
+  "kind": "check",
+  "description": "The Rust full gate: one check command runs `cargo fmt --all -- --check`, `cargo clippy --all-targets --all-features -- -D warnings` and `cargo test --all-features`. The project should add its dependency audit and coverage floor to the command.",
+  "config": {
+    "command": "cargo fmt --all -- --check && cargo clippy --all-targets --all-features -- -D warnings && cargo test --all-features",
+    "mutex": [
+      "cpu"
+    ],
+    "timeout_seconds": 6000
+  }
+}

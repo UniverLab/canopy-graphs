@@ -3,9 +3,9 @@
 What this graph is for: the loop the lab actually runs on its own
 branches. One spec at a time, on one locked repository: a designer plans
 into a spec note, an implementer writes the code, a deterministic gate
-script decides whether it holds, a completeness reviewer locates every
-requirement, a check node commits with the spec's own message, a
-reviewer of record repairs what it objects to, the gates run again, and
+script decides whether it holds, the reviewer locates every
+requirement, a check node commits with the spec's own message, the
+auditor repairs what it objects to, the gates run again, and
 the docs are written and committed before the repository is relocked.
 
 Each of the five working roles is a round-robin ensemble, so a member
@@ -31,11 +31,11 @@ The flow, in order (nodes and ensembles):
 4. `Plan check` (check) — fails when the notes file has no `## Designer` heading, so an empty designer never reaches the implementer.
 5. `Implementer` (round-robin ensemble, no commit rights) — implements the plan, leaves the tree uncommitted.
 6. `Full gates` (check) — `<GATE-SCRIPT>`, holding the `cpu` mutex so two graphs do not compile at once.
-7. `Reviewer 1 completeness` (round-robin ensemble) — locates every requirement at `file:line`. It does not fix and does not commit.
+7. `Reviewer` (round-robin ensemble) — locates every requirement at `file:line`. It does not fix and does not commit.
 8. `Commit spec` (check, commit rights) — commits with `$CANOPY_SPEC_COMMIT_MESSAGE`, relocks, and pushes the branch.
-9. `Reviewer 2 review and fix` (round-robin ensemble) — reads the commit as the reviewer of record, repairs what it objects to in the working tree, and never commits.
-10. `Full gates after reviewer 2` (check) — the same gate script over those repairs.
-11. `Commit reviewer 2 fixes` (check, commit rights) — commits `fix(<scope>): review fixes for <name>`, relocks, pushes.
+9. `Auditor` (round-robin ensemble) — reads the commit, repairs what it objects to in the working tree, and never commits.
+10. `Full gates after auditor` (check) — the same gate script over those repairs.
+11. `Commit auditor fixes` (check, commit rights) — commits `fix(<scope>): audit fixes for <name>`, relocks, pushes.
 12. `Unlock for documenter` (check) — releases the lock, because the documenter commits docs.
 13. `Documenter` (round-robin ensemble, commit rights) — writes the user docs the change needs and commits them.
 14. `Check docs committed` (check) — fails on a dirty tree, then pushes.
@@ -47,9 +47,9 @@ Fail and recovery edges:
 
 - `Implementer` fail → `Plan check`, which passes the spec straight back to the `Implementer` unless the plan note is gone, in which case the `Designer` ensemble runs again
 - `Full gates` fail → `Implementer`
-- `Reviewer 1 completeness` fail → the `Implementer` ensemble
-- `Reviewer 2 review and fix` fail → the `Implementer` ensemble
-- `Full gates after reviewer 2` fail → `Reviewer 2 review and fix`
+- `Reviewer` fail → the `Implementer` ensemble
+- `Auditor` fail → the `Implementer` ensemble
+- `Full gates after auditor` fail → `Auditor`
 - `Plan check` fail → the `Designer` ensemble
 - `Check docs committed` fail → the `Documenter` ensemble
 - `Documenter` fail → `Human verdict`
@@ -57,13 +57,13 @@ Fail and recovery edges:
 - `Resilience` pass → `Plan check`
 
 Every `error` edge goes to `Resilience`, and a fail from `Lock repo`,
-`Unlock for documenter`, `Relock repo`, `Commit spec`, `Commit reviewer 2
+`Unlock for documenter`, `Relock repo`, `Commit spec`, `Commit auditor
 fixes` or `Resilience` ends at `Human verdict`.
 
 What to set before installing:
 
 - **The gate script.** `<GATE-SCRIPT>` appears twice as a command and in
-  the implementer's and the second reviewer's prompt. Replace it with the
+  the implementer's and the auditor's prompt. Replace it with the
   command that runs the project's own gates: formatter, linter at `-D
   warnings`, dependency audit, coverage floor and the full test suite. If
   your script takes the spec's starting commit, write

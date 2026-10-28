@@ -36,11 +36,11 @@ The lab has not measured how many defects this catches that a same-family review
 
 ## In Canopy
 
-No catalogue document is dedicated to this pattern, because it is a binding choice, not a new shape. Install `canopy-loop` and bind its role ensembles across vendors: the Implementer on one, the Designer on a second, and both reviewers on a third. Every ensemble in that document arrives without a platform or a model, so the split is yours to make at install time.
+No catalogue document is dedicated to this pattern, because it is a binding choice, not a new shape. Install `canopy-loop` and bind its role ensembles across vendors: the Implementer on one, the Designer on a second, and the reviewer and the auditor on a third. Every ensemble in that document arrives without a platform or a model, so the split is yours to make at install time.
 
 Everything else stays as the loop defines it. The gate still sits before the reviewer, failures still route back to the implementer, and the documenter's own check still proves the tree is clean. Only the vendors differ.
 
-That loop already reviews twice behind one gate — a completeness gate that must locate every requirement, then a reviewer of record that repairs what it finds — so a vendor split there puts two families on the same diff without adding a node.
+That loop already reviews twice behind one gate — the reviewer must locate every requirement, then the auditor repairs what it finds — so a vendor split there puts two families on the same diff without adding a node.
 
 ## Try it
 

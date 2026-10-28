@@ -1,0 +1,13 @@
+{
+  "format_version": 1,
+  "name": "full-gates-web",
+  "kind": "check",
+  "description": "The TypeScript/web full gate: one check command runs lint, typecheck, unit tests, build and end-to-end tests. The project adds its dependency audit and coverage floor to the command.",
+  "config": {
+    "command": "if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; else npm install --no-audit --no-fund; fi && npm run lint && npm run typecheck && npm test && npm run build --if-present && npm run test:e2e --if-present",
+    "mutex": [
+      "cpu"
+    ],
+    "timeout_seconds": 6000
+  }
+}

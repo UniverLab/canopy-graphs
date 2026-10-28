@@ -5,7 +5,8 @@ status: standard
 implements:
   - graph:canopy-loop
   - graph:canopy-loop-plain
-  - node:cargo-gates
+  - node:full-gates-cargo
+  - node:full-gates-web
 figure: deterministic-gates.figure.json
 sources:
   - title: Building effective agents (Anthropic), ground truth from the environment
@@ -55,7 +56,7 @@ A `check` node holds the command. Edges route `pass` forward and `fail` back to 
 ```json
 {
   "from_node": "Full gates",
-  "to_node": "Reviewer 1 completeness",
+  "to_node": "Reviewer",
   "condition": "pass"
 },
 {
@@ -67,13 +68,23 @@ A `check` node holds the command. Edges route `pass` forward and `fail` back to 
 
 The implementer's prompt reads `{{previous_feedback}}` and must address every point in it, which is how a failure's reason reaches the next attempt.
 
-The `cargo-gates` node is the Rust version of the gate, from `nodes/cargo-gates/node.json`:
+The `full-gates-cargo` node is the Rust version of the gate, from `nodes/full-gates-cargo/node.json`:
 
 ```json
-"config": {
-  "command": "cargo fmt --all && cargo clippy --all-targets -- -D warnings && cargo test"
+{
+  "format_version": 1,
+  "name": "full-gates-cargo",
+  "kind": "check",
+  "description": "The Rust full gate: one check command runs `cargo fmt --all -- --check`, `cargo clippy --all-targets --all-features -- -D warnings` and `cargo test --all-features`. The project should add its dependency audit and coverage floor to the command.",
+  "config": {
+    "command": "cargo fmt --all -- --check && cargo clippy --all-targets --all-features -- -D warnings && cargo test --all-features",
+    "mutex": ["cpu"],
+    "timeout_seconds": 6000
+  }
 }
 ```
+
+A TypeScript or web project installs `full-gates-web` instead: the same shape, with a command that runs the install, the lint, the typecheck, the unit tests, the build and the end-to-end tests.
 
 In the catalogue the gate command is the `<GATE-SCRIPT>` placeholder. Replace it with the command that runs your own formatter, linter, dependency audit, coverage floor and test suite. Until you do, the placeholder fails, so a graph cannot pass its gates by doing nothing.
 
@@ -87,5 +98,6 @@ Harden the one gate instead, so every spec meets the same bar. Put the test budg
 
 ```sh
 canopy graph install canopy-loop
-canopy node install cargo-gates
+canopy node install full-gates-cargo
+canopy node install full-gates-web
 ```

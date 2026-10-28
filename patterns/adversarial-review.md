@@ -2,7 +2,8 @@
 title: Adversarial review
 summary: Review the work with models of different families, one told to break it, and back the verdict with deterministic checks.
 status: standard
-implements: []
+implements:
+  - node:reviewer
 figure: adversarial-review.figure.json
 sources:
   - title: Building effective agents (Anthropic), evaluator-optimizer workflow
@@ -63,7 +64,7 @@ The shape you add, with the prompt fields left out:
 
 The reviewers have no commit rights. A single committer lands the work only after both pass, and a failure routes back to the implementer.
 
-No official document implements this pair. The lab's loop reviews for completeness and then for correctness, and its second reviewer repairs what it finds instead of breaking the change on purpose; an adversary needs the narrower case, work that arrives from outside, and is added to that loop as one more ensemble when it is wanted.
+No official document implements this pair as a whole. The `reviewer` node is the constructive half: the lab's loop reviews for completeness and then for correctness, and its auditor repairs what it finds instead of breaking the change on purpose. An adversary needs the narrower case, work that arrives from outside, and is added to that loop as one more ensemble when it is wanted.
 
 ## Try it
 
