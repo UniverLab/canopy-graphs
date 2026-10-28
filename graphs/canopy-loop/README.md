@@ -8,10 +8,10 @@ requirement, a check node commits with the spec's own message, a
 reviewer of record repairs what it objects to, the gates run again, and
 the docs are written and committed before the repository is relocked.
 
-Every role is a round-robin ensemble, so a member that hits a quota or a
-harness failure rotates to the next one instead of failing the spec, and
-`gitkit` holds the repository so only this graph's committer nodes may
-commit while the loop runs.
+Each of the five working roles is a round-robin ensemble, so a member
+that hits a quota or a harness failure rotates to the next one instead
+of failing the spec, and `gitkit` holds the repository so only this
+graph's committer nodes may commit while the loop runs.
 
 Use it when all of these are true:
 
@@ -43,8 +43,9 @@ The flow, in order (nodes and ensembles):
 16. `Human verdict` (check) — a deliberate stop. A FAIL that is a judgment ends the spec here instead of spinning.
 17. `Resilience` (agent, the graph's infra node) — triages one failure as quota, glitch or defect, and can schedule the graph's own wake-up at a quota reset.
 
-Fail edges:
+Fail and recovery edges:
 
+- `Implementer` fail → `Plan check`, which passes the spec straight back to the `Implementer` unless the plan note is gone, in which case the `Designer` ensemble runs again
 - `Full gates` fail → `Implementer`
 - `Reviewer 1 completeness` fail → the `Implementer` ensemble
 - `Reviewer 2 review and fix` fail → the `Implementer` ensemble

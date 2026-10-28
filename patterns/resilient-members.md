@@ -39,7 +39,7 @@ Give it the clock. Models do not know what time it is: a real run at night sched
 
 Several CLIs with generous free tiers and small ceilings: spend them in sequence before touching anything paid. One ensemble node of kind cascade does it in a single call, members ordered cheapest to dearest.
 
-Members run one at a time. A failure falls through to the next cold; the first pass exits. A bounce resumes the member that last passed. A member with no infra retries falls through at once on a crash. The lab's committer lands every commit through this shape.
+Members run one at a time. A failure falls through to the next cold; the first pass exits. A bounce resumes the member that last passed. A member with no infra retries falls through at once on a crash. The lab's committer is an ensemble too: several members, one commit.
 
 ### Routing on why a member failed
 
@@ -78,7 +78,7 @@ The catalogue's `resilient-implementer` node is a cascade ensemble of two implem
 }
 ```
 
-The first pass wins; a quota or harness failure falls through to the second. Bind a different harness to each member at install time, ideally across providers. The schema also allows `round_robin`, in which members take turns; no catalogue node uses it yet.
+The first pass wins; a quota or harness failure falls through to the second. Bind a different harness to each member at install time, ideally across providers. The schema also allows `round_robin`, in which members take turns; `canopy-loop` uses it for every role ensemble.
 
 For the failure side of the same problem, see the `resilience` node. It reacts after a node fails, where members prevent the failure from ending the run.
 

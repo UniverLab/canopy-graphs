@@ -45,7 +45,7 @@ Since then, the lab's standard is adversarial review by models of different fami
 
 A parallel ensemble holds the reviewers. Its `min_pass` is 2, so both members must pass. Member 1 uses the shared constructive prompt. Member 2 overrides it with the adversarial one. No member names a platform or model, so whoever installs the graph binds a different family to each.
 
-The shape, with the prompt fields left out:
+The shape you add, with the prompt fields left out:
 
 ```json
 {

@@ -35,7 +35,8 @@ What the convention buys is boring history. No trailers to strip, no paraphrases
 
 ## In Canopy
 
-Two catalogue documents carry this pattern: one commits, one proves.
+Two catalogue nodes carry this pattern: one commits, one proves. Both
+loop graphs commit with the spec's message through a check node.
 
 `spec-commit` is the commit step. It is a check node with commit
 rights whose command stages everything and commits with the spec's own

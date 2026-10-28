@@ -1,7 +1,7 @@
 {
   "format_version": 6,
   "name": "canopy-loop",
-  "description": "The loop the lab runs on its own branches: a locked repo, a designer that plans into a spec note, an implementer that never commits, deterministic full gates, a completeness reviewer, a deterministic commit with the spec's own message, a reviewer of record that repairs and is committed in turn, the gates again, a documenter, and a clean-tree check before the repo is relocked. Every role is a round-robin ensemble, so a quota death rotates to the next member instead of failing the spec.",
+  "description": "The loop the lab runs on its own branches: a locked repo, a designer that plans into a spec note, an implementer that never commits, deterministic full gates, a completeness reviewer, a deterministic commit with the spec's own message, a reviewer of record that repairs and is committed in turn, the gates again, a documenter, and a clean-tree check before the repo is relocked. Each of the five working roles is a round-robin ensemble, so a quota death rotates to the next member instead of failing the spec.",
   "nodes": [
     {
       "name": "Start",

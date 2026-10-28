@@ -81,7 +81,7 @@ In the catalogue the gate command is the `<GATE-SCRIPT>` placeholder. Replace it
 
 An earlier catalogue carried a second graph whose whole job was to cover a finished change with tests. The lab dropped that shape. A separate test-review graph inspects one change at a time, while the gate every change must pass stays exactly as weak as it was, and work that nobody pointed the second graph at goes on shipping untested.
 
-Harden the one gate instead, so every spec meets the same bar. Put the test budget inside it: a cap on added-plus-removed lines, so a "fix" that rewrites the suite is refused. Keep the strict lint thresholds there, the dependency audit, and the coverage floor. Then a test that cannot fail, a suppressed lint and a stale dependency all fail the same command as a broken build, on every spec, without anyone deciding to run a review that day.
+Harden the one gate instead, so every spec meets the same bar. Put the test budget inside it: a cap on added-plus-removed lines, so a "fix" that rewrites the suite is refused. Keep the strict lint thresholds there, the dependency audit, and the coverage floor. Then a suite that ballooned, a suppressed lint and a stale dependency all fail the same command as a broken build, on every spec, without anyone deciding to run a review that day.
 
 ## Try it
 
