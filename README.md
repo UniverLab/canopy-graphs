@@ -20,8 +20,11 @@ press **Use this template**, to start your own.
 | [implementer](nodes/implementer) | The implementer step of a spec loop. |
 | [cargo-gates](nodes/cargo-gates) | The deterministic gate step of a Rust spec. |
 | [reviewer-committer](nodes/reviewer-committer) | The review-and-commit step of a spec loop. |
+| [reviewer-fixer](nodes/reviewer-fixer) | The reviewer of record: fixes the diff, never commits. |
 | [commit-check](nodes/commit-check) | The proof step after a committer. |
+| [spec-commit](nodes/spec-commit) | The deterministic commit step: the spec's own message, verbatim. |
 | [ensemble-proposers](nodes/ensemble-proposers) | Three parallel drafts of one spec before spending implementer quota. |
+| [resilient-implementer](nodes/resilient-implementer) | Two implementers in cascade, so a quota death is not a failed run. |
 | [resilience](nodes/resilience) | The on-call medic after a failure or blocker. |
 
 Install an official document by its name:
@@ -30,6 +33,11 @@ Install an official document by its name:
 canopy graph install spec-loop
 canopy node install implementer
 ```
+
+## Patterns
+
+The [patterns](patterns) are short pages on the orchestration ideas behind these
+documents: where each comes from, what the lab saw, and which document installs it.
 
 ## Make your own graphs repo
 
