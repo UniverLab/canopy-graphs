@@ -3,8 +3,10 @@ title: Deterministic gates
 summary: Shell checks decide pass or fail, never an LLM judge, and a failure carries its reason into the next prompt.
 status: standard
 implements:
-  - graph:spec-loop
-  - node:cargo-gates
+  - graph:canopy-loop
+  - graph:canopy-loop-plain
+  - node:full-gates-cargo
+  - node:full-gates-web
 figure: deterministic-gates.figure.json
 sources:
   - title: Building effective agents (Anthropic), ground truth from the environment
@@ -49,36 +51,53 @@ A plan from one node to the next travels through spec notes, not files. A design
 
 ## In Canopy
 
-A `check` node holds the command. Edges route `pass` forward and `fail` back to the implementer. In `spec-loop`, the gate and its two edges look like this:
+A `check` node holds the command. Edges route `pass` forward and `fail` back to the implementer. In `canopy-loop-plain`, the gate that follows the implementer and its two edges look like this:
 
 ```json
 {
-  "from_node": "full-gates",
-  "to_node": "reviewer",
+  "from_node": "Full gates",
+  "to_node": "Reviewer",
   "condition": "pass"
 },
 {
-  "from_node": "full-gates",
-  "to_node": "implementer",
+  "from_node": "Full gates",
+  "to_node": "Implementer",
   "condition": "fail"
 }
 ```
 
-The implementer's preset reads `{{previous_feedback}}` and must address every point in it, which is how a failure's reason reaches the next attempt.
+The implementer's prompt reads `{{previous_feedback}}` and must address every point in it, which is how a failure's reason reaches the next attempt.
 
-The `cargo-gates` node is the Rust version of the gate, from `nodes/cargo-gates/node.json`:
+The `full-gates-cargo` node is the Rust version of the gate, from `nodes/full-gates-cargo/node.json`:
 
 ```json
-"config": {
-  "command": "cargo fmt --all && cargo clippy --all-targets -- -D warnings && cargo test"
+{
+  "format_version": 1,
+  "name": "full-gates-cargo",
+  "kind": "check",
+  "description": "The Rust full gate: one check command runs `cargo fmt --all -- --check`, `cargo clippy --all-targets --all-features -- -D warnings` and `cargo test --all-features`. The project should add its dependency audit and coverage floor to the command.",
+  "config": {
+    "command": "cargo fmt --all -- --check && cargo clippy --all-targets --all-features -- -D warnings && cargo test --all-features",
+    "mutex": ["cpu"],
+    "timeout_seconds": 6000
+  }
 }
 ```
 
-In `spec-loop`, the gate command is a failing placeholder. Replace it with your project's own commands.
+A TypeScript or web project installs `full-gates-web` instead: the same shape, with a command that runs the install, the lint, the typecheck, the unit tests, the build and the end-to-end tests.
+
+In the catalogue the gate command is the `<GATE-SCRIPT>` placeholder. Replace it with the command that runs your own formatter, linter, dependency audit, coverage floor and test suite. Until you do, the placeholder fails, so a graph cannot pass its gates by doing nothing.
+
+## Keep hardening the gate
+
+An earlier catalogue carried a second graph whose whole job was to cover a finished change with tests. The lab dropped that shape. A separate test-review graph inspects one change at a time, while the gate every change must pass stays exactly as weak as it was, and work that nobody pointed the second graph at goes on shipping untested.
+
+Harden the one gate instead, so every spec meets the same bar. Put the test budget inside it: a cap on added-plus-removed lines, so a "fix" that rewrites the suite is refused. Keep the strict lint thresholds there, the dependency audit, and the coverage floor. Then a suite that ballooned, a suppressed lint and a stale dependency all fail the same command as a broken build, on every spec, without anyone deciding to run a review that day.
 
 ## Try it
 
 ```sh
-canopy graph install spec-loop
-canopy node install cargo-gates
+canopy graph install canopy-loop
+canopy node install full-gates-cargo
+canopy node install full-gates-web
 ```

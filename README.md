@@ -11,26 +11,23 @@ press **Use this template**, to start your own.
 
 | Graph | What it is for |
 |---|---|
-| [spec-loop](graphs/spec-loop) | One spec through implement → gates → review-and-commit → proof → human verdict. |
-| [single-committer](graphs/single-committer) | The spec loop with two reviewers, one adversarial, before one committer lands it. |
-| [quality-bubble](graphs/quality-bubble) | Covering the change already in the worktree with honest tests, no spec needed. |
+| [canopy-loop](graphs/canopy-loop) | The lab's loop as it runs: locked repo, designer, implementer, full gates, reviewer, commit, auditor, gates again, docs, unlock. |
+| [canopy-loop-plain](graphs/canopy-loop-plain) | The same roles as plain nodes: no ensembles, no lock. The starting point. |
 
 | Node | What it is for |
 |---|---|
+| [designer](nodes/designer) | Investigates the spec against the code and saves the plan as its spec note. |
 | [implementer](nodes/implementer) | The implementer step of a spec loop. |
-| [cargo-gates](nodes/cargo-gates) | The deterministic gate step of a Rust spec. |
-| [reviewer-committer](nodes/reviewer-committer) | The review-and-commit step of a spec loop. |
-| [reviewer-fixer](nodes/reviewer-fixer) | The reviewer of record: fixes the diff, never commits. |
-| [commit-check](nodes/commit-check) | The proof step after a committer. |
-| [spec-commit](nodes/spec-commit) | The deterministic commit step: the spec's own message, verbatim. |
-| [ensemble-proposers](nodes/ensemble-proposers) | Three parallel drafts of one spec before spending implementer quota. |
-| [resilient-implementer](nodes/resilient-implementer) | Two implementers in cascade, so a quota death is not a failed run. |
-| [resilience](nodes/resilience) | The on-call medic after a failure or blocker. |
+| [reviewer](nodes/reviewer) | The completeness review: locates every requirement and asks for changes. |
+| [auditor](nodes/auditor) | Reviews against the spec, repairs what it objects to, never commits. |
+| [full-gates-cargo](nodes/full-gates-cargo) | The Rust full gate: formatter, linter and tests in one check command. |
+| [full-gates-web](nodes/full-gates-web) | The TypeScript/web full gate: lint, typecheck, tests, build, end-to-end. |
+| [documenter](nodes/documenter) | Writes the user docs the change needs and leaves them uncommitted. |
 
 Install an official document by its name:
 
 ```sh
-canopy graph install spec-loop
+canopy graph install canopy-loop
 canopy node install implementer
 ```
 
