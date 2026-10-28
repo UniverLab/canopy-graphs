@@ -5,6 +5,7 @@ status: standard
 implements:
   - graph:spec-loop
   - node:cargo-gates
+figure: deterministic-gates.figure.json
 sources:
   - title: Building effective agents (Anthropic), ground truth from the environment
     url: https://www.anthropic.com/engineering/building-effective-agents
@@ -26,11 +27,25 @@ A gate that only says "fail" teaches the next attempt nothing. So the failure's 
 
 Anthropic's agent guidance makes the same point about grounding: agents should "gain 'ground truth' from the environment at each step." Its multi-agent write-up also pairs model judgment with deterministic safeguards such as retries and checkpoints.
 
+Three rules make this shape work, and each was learned by watching it not work.
+
+**The implement edge is `pass`, never `always`.** An `always` edge routes a failed implement into the reviewer, which then approves work that was never written. A real run marked a spec completed with no commit behind it that way.
+
+**The check sits before the reviewer.** Code that does not build never reaches review. Without that order, the reviewer writes up the breakage and the spec is marked completed anyway, because routing keys on the run's status, not on its prose.
+
+**Auto-fixing commands must not bounce work.** Run the formatter in rewrite mode, which fixes, not in check mode, which fails. Only genuine breakage should route back to implement.
+
+Use it for essentially everything. Start here and add shape only when a specific failure justifies it.
+
 ## What we saw
 
 The lab runs cheap, unreliable models with tight quota. Its standard loop puts the gates before any reviewer, so a reviewer's quota is never spent on code that does not compile.
 
 The lab has not measured how much this saves. It is a design choice, not a benchmark.
+
+## Handing plans down
+
+A plan from one node to the next travels through spec notes, not files. A designer node writes its plan with `spec_note_write` instead of a temp file no later node can find, and a verify step checks the notes file for the plan's heading. Every agent prompt already carries the notes, so nothing needs deleting and nothing goes stale.
 
 ## In Canopy
 

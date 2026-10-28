@@ -4,6 +4,7 @@ summary: Review the work with models of different families, one told to break it
 status: standard
 implements:
   - graph:single-committer
+figure: adversarial-review.figure.json
 sources:
   - title: Building effective agents (Anthropic), evaluator-optimizer workflow
     url: https://www.anthropic.com/engineering/building-effective-agents
@@ -22,6 +23,16 @@ Put at least two reviewers behind the implementer. One reads constructively. The
 Run the reviewers on models from different families, so they do not fail in the same way. Then put deterministic checks (formatter, linter, tests) in front of them, so no reviewer is asked to judge what a command can decide.
 
 Anthropic describes the shape in its evaluator-optimizer workflow: "one LLM call generates a response while another provides evaluation and feedback in a loop." The lab's version adds a second, adversarial evaluator and mixes model families.
+
+## The pair
+
+A reviewer asks "is this right?". An adversary asks "how do I break this?". Those are different jobs and they produce different findings.
+
+The figure shows the serial pair: implement, then the gate, then the adversary, then the review that commits. Note the inverted edges. The adversary reports fail when it succeeds at breaking the change, and that routes back to implement. It reports pass when it could not break it, and that routes on to the review.
+
+The adversary's prompt must demand a concrete reproduction: an input, a sequence, a race. Not an opinion, not a "this could be risky". An adversary that cannot produce one has not found anything, and saying so must be a legitimate, unpunished outcome, or it will invent findings to look useful.
+
+The pair fits work that arrives from outside. An issue filed by a stranger is exactly the case where something should try to falsify the fix before it lands.
 
 ## What we saw
 

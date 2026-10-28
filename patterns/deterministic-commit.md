@@ -5,6 +5,7 @@ status: in use
 implements:
   - node:spec-commit
   - node:commit-check
+figure: deterministic-commit.figure.json
 sources:
   - title: Building effective agents (Anthropic), ground truth from the environment
     url: https://www.anthropic.com/engineering/building-effective-agents
@@ -16,15 +17,21 @@ sources:
 
 A commit message written by a model drifts. It invents trailers, rewords the intent, or describes what the model thinks it did. The history then no longer matches the work that was asked for.
 
+Drift compounds. Each commit that paraphrases its spec makes the log a worse record of what was decided, and a later reader cannot tell which wording was the instruction and which was the model's summary of itself.
+
 ## The pattern
 
 Let the spec name its own commit. The spec's name is a Conventional Commit subject, `<type>(<scope>): <subject>`, and a deterministic check node runs the commit with that text verbatim. A model never writes it.
 
 A second check proves the commit landed. Both are facts about the repo, so neither needs a judge.
 
+Verbatim matters because the history is then an audit trail, not a retelling. The commit says what was asked, the diff says what was done, and any gap between them is visible instead of smoothed over by a helpful rewrite.
+
 ## What we saw
 
 The lab names every spec as the subject its commit will carry, and keeps its graphs' commits verbatim from the spec name. The lab has no recorded origin story for it beyond that convention.
+
+What the convention buys is boring history. No trailers to strip, no paraphrases to decode, no commit whose message describes work that is not in the diff.
 
 ## In Canopy
 
@@ -60,9 +67,11 @@ The stronger proof form is switched on in the node's README, and requires an ear
 test -n "{{spec_committed_head}}" && test "$(git rev-parse HEAD)" = "{{spec_committed_head}}"
 ```
 
+That form proves this run's own committer landed the commit, not just that HEAD moved. Use it wherever a concurrent commit from outside the run could satisfy the weaker check.
+
 The model-committed version this pattern replaces is
 `reviewer-committer`: a model reviews the diff and then commits, with
-a concise message it writes itself.
+a concise message it writes itself. Pick the deterministic commit when the message must match the spec exactly, and the model-committer when the message needs judgment the spec cannot carry.
 
 ## Try it
 
