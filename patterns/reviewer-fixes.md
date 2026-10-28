@@ -41,9 +41,10 @@ in `<GATE-SCRIPT>` at install time with the project's deterministic
 gates. From the prompt in `nodes/auditor/node.json`:
 
 ```
-If you changed anything, run the gate script once at the end:
-<GATE-SCRIPT>. It is exactly what the gate node after you runs. Fix
-until it prints GATES PASSED. If you changed nothing, do not run it.
+It is exactly what the gate node after you runs (formatting, the
+linter at -D warnings, the dependency audit, the coverage floor, the
+full suite); it may wait for the CPU lock first. Fix until it prints
+GATES PASSED. If you changed nothing, do not run it.
 ```
 
 The single run at the end is deliberate. The auditor proves its own
