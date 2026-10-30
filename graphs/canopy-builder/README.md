@@ -1,4 +1,4 @@
-# canopy-engine-developer
+# canopy-builder
 
 What this graph is for: the loop the lab actually runs on its own
 branches. One spec at a time, on one locked repository: a designer plans
@@ -83,5 +83,5 @@ What to set before installing:
 Install:
 
 ```sh
-canopy graph install canopy-engine-developer
+canopy graph install canopy-builder
 ```

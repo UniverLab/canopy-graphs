@@ -1,6 +1,6 @@
 # adversarial-developer
 
-What this graph is for: the same roles as [canopy-engine-developer](../canopy-engine-developer),
+What this graph is for: the same roles as [canopy-builder](../canopy-builder),
 as plain nodes you can read in one glance. Designer, implementer, full
 gates, the reviewer, the auditor that repairs what it finds, the gates
 again, a documenter, and one deterministic commit. No
@@ -8,19 +8,19 @@ ensembles, no repository lock, no resilience node.
 
 **Start here.** This is the document to copy when you build your own loop:
 every role is one node with one prompt, so a change is a change in one
-place. Once the shape is yours, `canopy-engine-developer` is the hardened version — it
+place. Once the shape is yours, `canopy-builder` is the hardened version — it
 adds round-robin ensembles so a quota death does not fail the spec, the
 gitkit lock so nothing else commits while it runs, a plan check, and a
 resilience node that can schedule its own wake-up.
 
-Differences that matter when you move from here to `canopy-engine-developer`:
+Differences that matter when you move from here to `canopy-builder`:
 
 - **One commit, at the end.** The documenter leaves its docs uncommitted
   and `Commit` lands the spec's work and its docs together, under the
-  spec's own message. `canopy-engine-developer` commits the code first, reviews the
+  spec's own message. `canopy-builder` commits the code first, reviews the
   commit, and commits the audit fixes separately.
 - **The auditor reads the working tree.** Here the change is
-  uncommitted when it audits; in `canopy-engine-developer` it reads `HEAD`.
+  uncommitted when it audits; in `canopy-builder` it reads `HEAD`.
 - **No lock.** Nothing stops another process committing while the loop
   runs, so do not run two of these against the same branch.
 - **A designer failure ends the spec.** There is no resilience node to
