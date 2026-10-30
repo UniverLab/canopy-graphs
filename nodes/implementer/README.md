@@ -14,7 +14,7 @@ What it leaves behind: the change in the working tree, uncommitted,
 after the gate script has printed GATES PASSED.
 
 Config: `prompt_template`, the `Implementer` prompt of
-`canopy-loop-plain`, bundled verbatim in `node.json`. No `platform`,
+`adversarial-developer`, bundled verbatim in `node.json`. No `platform`,
 `model`, or `cli` bindings.
 
 What the installer must fill in: a platform and a model at install

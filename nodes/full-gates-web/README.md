@@ -15,7 +15,7 @@ reports whether the change holds.
 
 Config: the `command`, plus `mutex: ["cpu"]` so two graphs do not
 compile at once, and `timeout_seconds: 6000` — the same config the
-`Full gates` node carries in `canopy-loop-plain`. No `platform`,
+`Full gates` node carries in `adversarial-developer`. No `platform`,
 `model`, or `cli` bindings.
 
 What the installer must fill in: nothing for a TypeScript project. The
