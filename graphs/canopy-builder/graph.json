@@ -1,6 +1,6 @@
 {
   "format_version": 6,
-  "name": "canopy-loop",
+  "name": "canopy-builder",
   "description": "The loop the lab runs on its own branches: a locked repo, a designer that plans into a spec note, an implementer that never commits, deterministic full gates, the reviewer, a deterministic commit with the spec's own message, the auditor that repairs and is committed in turn, the gates again, a documenter, and a clean-tree check before the repo is relocked. Each of the five working roles is a round-robin ensemble, so a quota death rotates to the next member instead of failing the spec.",
   "nodes": [
     {
@@ -16,7 +16,7 @@
       "kind": "check",
       "position": 2,
       "config": {
-        "command": "gitkit lock --timeout 8h --reason \"canopy-loop running; only its committer nodes may commit\" 2>&1 | tail -3"
+        "command": "gitkit lock --timeout 8h --reason \"canopy-builder running; only its committer nodes may commit\" 2>&1 | tail -3"
       }
     },
     {
@@ -60,7 +60,7 @@
       "kind": "check",
       "position": 7,
       "config": {
-        "command": "gitkit lock --timeout 8h --reason \"canopy-loop running; only its committer nodes may commit\" 2>&1 | tail -2"
+        "command": "gitkit lock --timeout 8h --reason \"canopy-builder running; only its committer nodes may commit\" 2>&1 | tail -2"
       }
     },
     {
@@ -97,7 +97,7 @@
       "kind": "check",
       "position": 11,
       "config": {
-        "command": "( if [ -z \"$(git status --porcelain)\" ]; then echo 'auditor left the tree clean: nothing to commit'; exit 0; fi; if [ -z \"$CANOPY_SPEC_TYPE\" ]; then echo \"spec $CANOPY_SPEC_ID has no type: cannot build the audit-fix message\"; exit 1; fi; scope=\"\"; if [ -n \"$CANOPY_SPEC_SCOPE\" ]; then scope=\"($CANOPY_SPEC_SCOPE)\"; fi; msg=\"fix${scope}: audit fixes for $CANOPY_SPEC_NAME\"; gitkit unlock >/dev/null 2>&1; git add -A && git commit -q -m \"$msg\" && echo \"committed $(git rev-parse --short HEAD) $msg\"; c=$?; gitkit lock --timeout 8h --reason \"canopy-loop running; only its committer nodes may commit\" >/dev/null 2>&1; test $c -eq 0 && test -z \"$(git status --porcelain)\" ); c=$?; if [ $c -eq 0 ]; then b=$(git rev-parse --abbrev-ref HEAD); if git push -q -u origin \"$b\" >/dev/null 2>&1; then echo \"pushed $b\"; else echo \"PUSH FAILED for $b (the commit stays local; the next commit's push carries it)\"; fi; fi; exit $c",
+        "command": "( if [ -z \"$(git status --porcelain)\" ]; then echo 'auditor left the tree clean: nothing to commit'; exit 0; fi; if [ -z \"$CANOPY_SPEC_TYPE\" ]; then echo \"spec $CANOPY_SPEC_ID has no type: cannot build the audit-fix message\"; exit 1; fi; scope=\"\"; if [ -n \"$CANOPY_SPEC_SCOPE\" ]; then scope=\"($CANOPY_SPEC_SCOPE)\"; fi; msg=\"fix${scope}: audit fixes for $CANOPY_SPEC_NAME\"; gitkit unlock >/dev/null 2>&1; git add -A && git commit -q -m \"$msg\" && echo \"committed $(git rev-parse --short HEAD) $msg\"; c=$?; gitkit lock --timeout 8h --reason \"canopy-builder running; only its committer nodes may commit\" >/dev/null 2>&1; test $c -eq 0 && test -z \"$(git status --porcelain)\" ); c=$?; if [ $c -eq 0 ]; then b=$(git rev-parse --abbrev-ref HEAD); if git push -q -u origin \"$b\" >/dev/null 2>&1; then echo \"pushed $b\"; else echo \"PUSH FAILED for $b (the commit stays local; the next commit's push carries it)\"; fi; fi; exit $c",
         "commit_rights": true,
         "timeout_seconds": 120
       }
@@ -107,7 +107,7 @@
       "kind": "check",
       "position": 12,
       "config": {
-        "command": "( msg=\"$CANOPY_SPEC_COMMIT_MESSAGE\"; if [ -z \"$msg\" ]; then echo \"spec $CANOPY_SPEC_ID has no type, so the engine built no commit message: give it a conventional name or a type\"; exit 1; fi; if [ -z \"$(git status --porcelain)\" ]; then if [ \"$(git rev-parse HEAD)\" != \"$CANOPY_SPEC_START_HEAD\" ]; then echo \"already committed: $(git log -1 --oneline)\"; exit 0; fi; echo 'nothing to commit and nothing committed since the spec started'; exit 1; fi; gitkit unlock >/dev/null 2>&1; git add -A && git commit -q -m \"$msg\"; c=$?; gitkit lock --timeout 8h --reason \"canopy-loop running; only its committer nodes may commit\" >/dev/null 2>&1; if [ $c -ne 0 ]; then echo \"commit failed for: $msg\"; exit 1; fi; test -z \"$(git status --porcelain)\" && echo \"committed $(git log -1 --oneline)\" ); c=$?; if [ $c -eq 0 ]; then b=$(git rev-parse --abbrev-ref HEAD); if git push -q -u origin \"$b\" >/dev/null 2>&1; then echo \"pushed $b\"; else echo \"PUSH FAILED for $b (the commit stays local; the next commit's push carries it)\"; fi; fi; exit $c",
+        "command": "( msg=\"$CANOPY_SPEC_COMMIT_MESSAGE\"; if [ -z \"$msg\" ]; then echo \"spec $CANOPY_SPEC_ID has no type, so the engine built no commit message: give it a conventional name or a type\"; exit 1; fi; if [ -z \"$(git status --porcelain)\" ]; then if [ \"$(git rev-parse HEAD)\" != \"$CANOPY_SPEC_START_HEAD\" ]; then echo \"already committed: $(git log -1 --oneline)\"; exit 0; fi; echo 'nothing to commit and nothing committed since the spec started'; exit 1; fi; gitkit unlock >/dev/null 2>&1; git add -A && git commit -q -m \"$msg\"; c=$?; gitkit lock --timeout 8h --reason \"canopy-builder running; only its committer nodes may commit\" >/dev/null 2>&1; if [ $c -ne 0 ]; then echo \"commit failed for: $msg\"; exit 1; fi; test -z \"$(git status --porcelain)\" && echo \"committed $(git log -1 --oneline)\" ); c=$?; if [ $c -eq 0 ]; then b=$(git rev-parse --abbrev-ref HEAD); if git push -q -u origin \"$b\" >/dev/null 2>&1; then echo \"pushed $b\"; else echo \"PUSH FAILED for $b (the commit stays local; the next commit's push carries it)\"; fi; fi; exit $c",
         "commit_rights": true,
         "timeout_seconds": 120
       }

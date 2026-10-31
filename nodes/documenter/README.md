@@ -13,7 +13,7 @@ What it leaves behind: the updated pages under `docs/` and the
 project's README, uncommitted in the working tree.
 
 Config: `prompt_template`, the `Documenter` prompt of
-`canopy-loop-plain`, bundled verbatim in `node.json`. No `platform`,
+`adversarial-developer`, bundled verbatim in `node.json`. No `platform`,
 `model`, or `cli` bindings.
 
 What the installer must fill in: a platform and a model at install

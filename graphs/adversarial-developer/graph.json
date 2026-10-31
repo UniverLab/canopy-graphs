@@ -1,7 +1,7 @@
 {
   "format_version": 6,
-  "name": "canopy-loop-plain",
-  "description": "The canopy-loop roles as plain nodes: designer, implementer, full gates, the reviewer, the auditor, the gates again, documenter and one deterministic commit. No ensembles and no repository lock, so every role is a node you can read in one glance. The starting point; canopy-loop is the hardened version.",
+  "name": "adversarial-developer",
+  "description": "The canopy-builder roles as plain nodes: designer, implementer, full gates, the reviewer, the auditor, the gates again, documenter and one deterministic commit. No ensembles and no repository lock, so every role is a node you can read in one glance. The starting point; canopy-builder is the hardened version.",
   "nodes": [
     {
       "name": "Start",

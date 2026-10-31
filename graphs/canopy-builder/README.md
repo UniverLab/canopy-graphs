@@ -1,4 +1,4 @@
-# canopy-loop
+# canopy-builder
 
 What this graph is for: the loop the lab actually runs on its own
 branches. One spec at a time, on one locked repository: a designer plans
@@ -21,7 +21,7 @@ Use it when all of these are true:
 - a failed spec should stop and be read, not be retried forever.
 
 For a single spec, or a repo where a lock would only get in the way,
-install [canopy-loop-plain](../canopy-loop-plain) first.
+install [adversarial-developer](../adversarial-developer) first.
 
 The flow, in order (nodes and ensembles):
 
@@ -83,5 +83,5 @@ What to set before installing:
 Install:
 
 ```sh
-canopy graph install canopy-loop
+canopy graph install canopy-builder
 ```

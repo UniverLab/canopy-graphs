@@ -13,7 +13,7 @@ What it leaves behind: its repairs in the working tree, uncommitted,
 and a spec note of what it checked, fixed and left.
 
 Config: `prompt_template`, the `Auditor` prompt of
-`canopy-loop-plain`, bundled verbatim in `node.json`. No `platform`,
+`adversarial-developer`, bundled verbatim in `node.json`. No `platform`,
 `model`, or `cli` bindings.
 
 What the installer must fill in: a platform and a model at install

@@ -11,8 +11,8 @@ press **Use this template**, to start your own.
 
 | Graph | What it is for |
 |---|---|
-| [canopy-loop](graphs/canopy-loop) | The lab's loop as it runs: locked repo, designer, implementer, full gates, reviewer, commit, auditor, gates again, docs, unlock. |
-| [canopy-loop-plain](graphs/canopy-loop-plain) | The same roles as plain nodes: no ensembles, no lock. The starting point. |
+| [canopy-builder](graphs/canopy-builder) | The lab's loop as it runs: locked repo, designer, implementer, full gates, reviewer, commit, auditor, gates again, docs, unlock. |
+| [adversarial-developer](graphs/adversarial-developer) | The same roles as plain nodes: no ensembles, no lock. The starting point. |
 
 | Node | What it is for |
 |---|---|
@@ -27,7 +27,7 @@ press **Use this template**, to start your own.
 Install an official document by its name:
 
 ```sh
-canopy graph install canopy-loop
+canopy graph install canopy-builder
 canopy node install implementer
 ```
 
