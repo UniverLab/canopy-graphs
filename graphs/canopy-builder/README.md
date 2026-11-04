@@ -4,9 +4,10 @@ What this graph is for: the loop the lab actually runs on its own
 branches. One spec at a time, on one locked repository: a designer plans
 into a spec note, an implementer writes the code, a deterministic gate
 script decides whether it holds, the reviewer locates every
-requirement, a check node commits with the spec's own message, the
-auditor repairs what it objects to, the gates run again, and
-the docs are written and committed before the repository is relocked.
+requirement, the auditor repairs what it objects to in the working
+tree, the gates run again, a single check node commits with the
+spec's own message, and the docs are written and committed
+before the repository is relocked.
 
 Each of the five working roles is a round-robin ensemble, so a member
 that hits a quota or a harness failure rotates to the next one instead
@@ -32,16 +33,15 @@ The flow, in order (nodes and ensembles):
 5. `Implementer` (round-robin ensemble, no commit rights) — implements the plan, leaves the tree uncommitted.
 6. `Full gates` (check) — `<GATE-SCRIPT>`, holding the `cpu` mutex so two graphs do not compile at once.
 7. `Reviewer` (round-robin ensemble) — locates every requirement at `file:line`. It does not fix and does not commit.
-8. `Commit spec` (check, commit rights) — commits with `$CANOPY_SPEC_COMMIT_MESSAGE`, relocks, and pushes the branch.
-9. `Auditor` (round-robin ensemble) — reads the commit, repairs what it objects to in the working tree, and never commits.
-10. `Full gates after auditor` (check) — the same gate script over those repairs.
-11. `Commit auditor fixes` (check, commit rights) — commits `fix(<scope>): audit fixes for <name>`, relocks, pushes.
-12. `Unlock for documenter` (check) — releases the lock, because the documenter commits docs.
-13. `Documenter` (round-robin ensemble, commit rights) — writes the user docs the change needs and commits them.
-14. `Check docs committed` (check) — fails on a dirty tree, then pushes.
-15. `Relock repo` (check) — takes the lock back for the rest of the queue.
-16. `Human verdict` (check) — a deliberate stop. A FAIL that is a judgment ends the spec here instead of spinning.
-17. `Resilience` (agent, the graph's infra node) — triages one failure as quota, glitch or defect, and can schedule the graph's own wake-up at a quota reset.
+8. `Auditor` (round-robin ensemble) — reads the working tree (nothing is committed yet), repairs what it objects to, and never commits.
+9. `Full gates after auditor` (check) — the same gate script over those repairs.
+10. `Commit spec` (check, commit rights) — the single commit with `$CANOPY_SPEC_COMMIT_MESSAGE` (implementation and auditor fixes together), relocks, and pushes the branch.
+11. `Unlock for documenter` (check) — releases the lock, because the documenter commits docs.
+12. `Documenter` (round-robin ensemble, commit rights) — writes the user docs the change needs and commits them.
+13. `Check docs committed` (check) — fails on a dirty tree, then pushes.
+14. `Relock repo` (check) — takes the lock back for the rest of the queue.
+15. `Human verdict` (check) — a deliberate stop. A FAIL that is a judgment ends the spec here instead of spinning.
+16. `Resilience` (agent, the graph's infra node) — triages one failure as quota, glitch or defect, and can schedule the graph's own wake-up at a quota reset.
 
 Fail and recovery edges:
 
@@ -57,8 +57,8 @@ Fail and recovery edges:
 - `Resilience` pass → `Plan check`
 
 Every `error` edge goes to `Resilience`, and a fail from `Lock repo`,
-`Unlock for documenter`, `Relock repo`, `Commit spec`, `Commit auditor
-fixes` or `Resilience` ends at `Human verdict`.
+`Unlock for documenter`, `Relock repo`, `Commit spec`
+or `Resilience` ends at `Human verdict`.
 
 What to set before installing:
 
@@ -68,7 +68,7 @@ What to set before installing:
   warnings`, dependency audit, coverage floor and the full test suite. If
   your script takes the spec's starting commit, write
   `<GATE-SCRIPT> "{{spec_start_head}}"`, which is the form the lab uses.
-- **gitkit.** The lock nodes and both committer nodes call `gitkit lock`
+- **gitkit.** The lock nodes and the committer node call `gitkit lock`
   and `gitkit unlock`, and a completion hook unlocks the repository when
   the run ends. Install gitkit on the path the daemon sees, and reword
   the `--reason` text to name your own queue.
@@ -76,7 +76,7 @@ What to set before installing:
   ensemble has four empty members (`Documenter` has two), and `min_pass` is
   4 for the four-member ones and 1 for the `Documenter`; bind a platform and
   a model to every member, and keep them on different vendors where you can.
-- **The push.** Both committer nodes and `Check docs committed` run a
+- **The push.** The committer node and `Check docs committed` run a
   plain `git push -u origin <branch>`. That needs a credential helper the
   daemon can use; add one to the command if your remote needs it.
 
