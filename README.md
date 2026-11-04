@@ -1,17 +1,32 @@
-# canopy-graphs
+<p align="center">
+  <img src="https://raw.githubusercontent.com/UniverLab/.github/main/assets/banner-canopy-graphs.svg" alt="Canopy Graphs"/>
+</p>
 
-The official [Canopy](https://univerlab.org/canopy) graphs and nodes, listed on
-[graphs.univerlab.org](https://graphs.univerlab.org).
+<p align="center">
+  <a href="https://graphs.univerlab.org"><img src="https://img.shields.io/badge/catalogue-graphs.univerlab.org-3CC7BD?style=for-the-badge" alt="Catalogue"/></a>
+  <a href="https://github.com/UniverLab/harness-canopy"><img src="https://img.shields.io/badge/Canopy-harness--canopy-2E8B57?style=for-the-badge" alt="Canopy"/></a>
+  <a href="https://github.com/UniverLab/canopy-graphs/generate"><img src="https://img.shields.io/badge/Use%20this-template-27AE60?style=for-the-badge" alt="Use this template"/></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/UniverLab/canopy-graphs?style=for-the-badge" alt="License"/></a>
+</p>
 
-Official documents are ordinary catalogue documents: this repo has the same
-layout any community repo uses. The only difference is the owner. Fork it, or
-press **Use this template**, to start your own.
+<p align="center">
+  <a href="https://graphs.univerlab.org"><b>Browse the catalogue</b></a> ·
+  <a href="https://univerlab.org/canopy/">Canopy</a> ·
+  <a href="https://univerlab.org/canopy/docs/graphs-sharing/">Sharing graphs</a>
+</p>
+
+The official [Canopy](https://univerlab.org/canopy/) graphs and nodes, listed on
+[graphs.univerlab.org](https://graphs.univerlab.org). They are ordinary catalogue
+documents: this repo has the same layout any community repo uses, and the only
+difference is the owner. Fork it, or press **Use this template**, to start your own.
+
+---
 
 ## What is here
 
 | Graph | What it is for |
 |---|---|
-| [canopy-builder](graphs/canopy-builder) | The lab's loop as it runs: locked repo, designer, implementer, full gates, reviewer, commit, auditor, gates again, docs, unlock. |
+| [canopy-builder](graphs/canopy-builder) | The lab's loop as it runs: locked repo, designer, implementer, full gates, reviewer, auditor, gates again, one commit per spec, docs, unlock. |
 | [adversarial-developer](graphs/adversarial-developer) | The same roles as plain nodes: no ensembles, no lock. The starting point. |
 
 | Node | What it is for |
@@ -33,7 +48,7 @@ canopy node install implementer
 
 ## Patterns
 
-The [patterns](patterns) are short pages on the orchestration ideas behind these
+The [patterns](https://graphs.univerlab.org/patterns) are short pages on the orchestration ideas behind these
 documents: where each comes from, what the lab saw, and which document installs it.
 
 ## Make your own graphs repo
