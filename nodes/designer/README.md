@@ -8,7 +8,7 @@ What it reads: `{{spec_content}}` and the spec notes of the run. On a
 retry it continues its own `## Designer` note instead of starting over,
 and the note is shared with every later node.
 
-What it leaves behind: the plan, saved with `spec_note_write` as its
+What it leaves behind: the plan, saved with `spec_edit` `note_write` as its
 spec note. That note is the deliverable; no file in the working tree
 changes.
 
